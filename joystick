@@ -1,0 +1,171 @@
+#include <WiFi.h>
+#include <PubSubClient.h>
+
+const char* ssid = "tu_SSID";
+const char* password = "tu_password";
+const char* mqtt_server = "IP_del_broker_Mosquitto";
+
+WiFiClient espClient;
+PubSubClient client(espClient);
+
+const int redPin = 16;    // Pin del LED RGB para el color rojo
+const int greenPin = 17;  // Pin del LED RGB para el color verde
+const int bluePin = 18;   // Pin del LED RGB para el color azul
+const int vrxPin = 34;    // Eje X del joystick
+const int vryPin = 35;    // Eje Y del joystick
+const int swPin = 27;     // Botón del joystick
+
+void setup() {
+  Serial.begin(115200);
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  pinMode(swPin, INPUT_PULLUP);
+}
+
+void loop() {
+  if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+
+  int vrxValue = analogRead(vrxPin);
+  int vryValue = analogRead(vryPin);
+  int swValue = digitalRead(swPin);
+
+  // Cambia el color del LED RGB según el movimiento del joystick
+  if (vrxValue < 1000) {
+    setColor(255, 0, 0);  // Rojo (izquierda)
+    client.publish("joystick/direction", "LEFT");
+  } else if (vrxValue > 3000) {
+    setColor(0, 255, 0);  // Verde (derecha)
+    client.publish("joystick/direction", "RIGHT");
+  } else if (vryValue < 1000) {
+    setColor(0, 0, 255);  // Azul (arriba)
+    client.publish("joystick/direction", "UP");
+  } else if (vryValue > 3000) {
+    setColor(255, 255, 0);  // Amarillo (abajo)
+    client.publish("joystick/direction", "DOWN");
+  } else {
+    setColor(0, 0, 0);  // Apaga el LED
+  }
+
+  // Publicar estado del botón y cambiar a color magenta
+  if (swValue == LOW) {
+    setColor(255, 0, 255);  // Magenta si se presiona el botón
+    client.publish("joystick/button", "PRESSED");
+  } else {
+    client.publish("joystick/button", "RELEASED");
+  }
+
+  delay(200);
+}
+
+void setColor(int red, int green, int blue) {
+  analogWrite(redPin, red);
+  analogWrite(greenPin, green);
+  analogWrite(bluePin, blue);
+}
+
+void setup_wifi() {
+  delay(10);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+  }
+}
+
+void reconnect() {
+  while (!client.connected()) {
+    if (client.connect("ESP32Client")) {
+      client.subscribe("joystick/#");
+    } else {
+      delay(5000);
+    }
+  }
+}
+
+Parte 2: Control de LED RGB con Joystick en MicroPython
+Código en MicroPython:
+python
+Copiar código
+from machine import Pin, ADC, PWM
+import network
+import time
+from umqtt.simple import MQTTClient
+
+# Configuración de WiFi
+ssid = "tu_SSID"
+password = "tu_password"
+mqtt_server = "IP_del_broker_Mosquitto"
+client_id = "ESP32_joystick"
+topic_dir = b'joystick/direction'
+topic_btn = b'joystick/button'
+
+# Pines del joystick y LED RGB
+vrx = ADC(Pin(34))
+vry = ADC(Pin(35))
+button = Pin(27, Pin.IN, Pin.PULL_UP)
+
+# Configuración de los pines PWM para el LED RGB
+red = PWM(Pin(16), freq=500)
+green = PWM(Pin(17), freq=500)
+blue = PWM(Pin(18), freq=500)
+
+# Conexión a WiFi
+def connect_wifi():
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    wlan.connect(ssid, password)
+    while not wlan.isconnected():
+        time.sleep(0.5)
+
+# Configuración de MQTT
+def connect_mqtt():
+    client = MQTTClient(client_id, mqtt_server)
+    client.connect()
+    return client
+
+# Función para establecer el color del LED RGB
+def set_color(r, g, b):
+    red.duty(r)
+    green.duty(g)
+    blue.duty(b)
+
+def main():
+    connect_wifi()
+    client = connect_mqtt()
+
+    while True:
+        x_value = vrx.read()
+        y_value = vry.read()
+
+        # Control de color basado en joystick
+        if x_value < 1000:
+            set_color(1023, 0, 0)  # Rojo
+            client.publish(topic_dir, b'LEFT')
+        elif x_value > 3000:
+            set_color(0, 1023, 0)  # Verde
+            client.publish(topic_dir, b'RIGHT')
+        elif y_value < 1000:
+            set_color(0, 0, 1023)  # Azul
+            client.publish(topic_dir, b'UP')
+        elif y_value > 3000:
+            set_color(1023, 1023, 0)  # Amarillo
+            client.publish(topic_dir, b'DOWN')
+        else:
+            set_color(0, 0, 0)  # Apaga el LED
+
+        # Publicar estado del botón y cambiar a color magenta
+        if not button.value():
+            set_color(1023, 0, 1023)  # Magenta
+            client.publish(topic_btn, b'PRESSED')
+        else:
+            client.publish(topic_btn, b'RELEASED')
+
+        time.sleep(0.2)
+
+main()
