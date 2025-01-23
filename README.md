@@ -16,28 +16,16 @@
 |Thonny|4.1.6|
 |Arduino IDE|2.3.4|
 
-## Diagrama de los ejercicios.
-### Potenciometro:
- Video: https://drive.google.com/file/d/1oxxY-BmHAi2fgCS7_E2_mL9ux7d3xvPN/view?usp=sharing
-
- Video de Potenciometro con Tira LED: https://drive.google.com/file/d/151RggF_Kq2i0SAIyJmsWi0paO55JEI2F/view?usp=sharing
-
 ### Sensor Ultrasonico:
 
- Video: https://drive.google.com/file/d/183ZHaA9D2F0P6VYCohKJwEwuiUI78SYP/view?usp=sharing
-
-### Joystick:
- Video: https://drive.google.com/file/d/1H3OFqRrzjr4pNj-000PVz7yRAlSEnf_F/view?usp=sharing
-
- Video 2: https://drive.google.com/file/d/1MGYY49SaSnE6OWH_Sk9Qvdvn1KW8_Jyg/view?usp=sharing
+[ Video: https://drive.google.com/file/d/183ZHaA9D2F0P6VYCohKJwEwuiUI78SYP/view?usp=sharing](https://drive.google.com/file/d/1hPeE84T-QBvazPrkdXiQ2kc9TQ5pdss-/view?usp=drive_link)
+https://drive.google.com/file/d/1hNnSbrNSgrDvKrmgX-P_UicmfLZCMPl6/view?usp=drive_link
 
 ### Matriz
 
- Video: https://drive.google.com/file/d/1o4wSvunLvd68r1OrCUHoIEB86SjdUkKl/view?usp=sharing
-
- Video Barra LED volumen: https://drive.google.com/file/d/1apANq3ESqJ2FUsCIEqdougEd9-OwAKw_/view?usp=sharing
-
- Video Saludo Matriz: https://drive.google.com/file/d/1D82cH_wLtjFqF-vPjEupgssGA708Gh6t/view?usp=sharing
+[ Video: https://drive.google.com/file/d/1o4wSvunLvd68r1OrCUHoIEB86SjdUkKl/view?usp=sharing](https://drive.google.com/file/d/1hNY_EWo3nxYyVQ_kz2wCp4TYm76-d8rh/view?usp=drive_link)
+ Saludo Matriz: 
+ https://drive.google.com/file/d/1hHWESZySmNR6WgBBBw7Isn1wlGxnNJ7R/view?usp=drive_link
 
 
 ### motor_a_pasos_con_botons
@@ -47,7 +35,7 @@
 
 ### OLED
 
- Video OLED: https://drive.google.com/file/d/1SJgfRBOn8Me08X6gq05P6QO_FT3n1Mj6/view?usp=sharing
+[ Video OLED: https://drive.google.com/file/d/1SJgfRBOn8Me08X6gq05P6QO_FT3n1Mj6/view?usp=sharing](https://drive.google.com/file/d/1hKuAPOwgnDx48ggKjOteqIlXKNQcvDEg/view?usp=drive_link)
 
 ### examen
 
@@ -55,5 +43,6 @@
  
 
 ## Drive de los videos de los ejercicios hechos en clase
-
-https://drive.google.com/drive/folders/106yql2wey2qm0ozp05kmdCyJYlrJylWQ?usp=sharing
+[
+https://drive.google.com/drive/folders/1gYN1VwfzlvMVOWGEdzm45k9bBOxond4z?usp=drive_link
+](https://drive.google.com/drive/folders/1gYN1VwfzlvMVOWGEdzm45k9bBOxond4z?usp=drive_link)
